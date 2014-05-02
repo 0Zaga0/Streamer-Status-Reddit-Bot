@@ -38,7 +38,8 @@ if __name__ == '__main__':
 
                     online = True
 
-                    title = "[ONLINE] Playing %s : %s" % (data['stream']['channel']['game'], data['stream']['channel']['status'])
+                    title = "[ONLINE] Playing %s : %s" % (data['stream']['channel']['game'],
+                                                          data['stream']['channel']['status'])
 
                     r.submit(SUBREDDIT, title, url=data['stream']['channel']['url'])
             else:
