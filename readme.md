@@ -9,6 +9,7 @@ You must edit your subreddit's settings and add
 > \[\]\(#twitch_offline\)
 OR
 > \[\]\(#azubu_offline\)
+
 to the sidebar wherever you would like the streamer's status to be displayed.
 
 The #twitch_offline and #azubu_offline hashes will change to #twitch_online and #azubu_online hashes respectively, to indictate the status of the stream.  When a streamer is online, the hash will still be at the end of the stream link (e.g. http://www.twitch.tv/TSM_WildTurtle#twitch_online).
