@@ -13,12 +13,12 @@ import HTMLParser
 #
 # VARIABLES TO CONFIGURE
 #
-REDDIT_USERNAME = 'LoLFantasyBot'
-REDDIT_PASSWORD = '%^fw9DYkus0VT5jq'
-SUBREDDIT = 'zagatest'
+REDDIT_USERNAME = ''
+REDDIT_PASSWORD = ''
+SUBREDDIT = ''
 
-TWITCH_CHANNEL = 'TSM_WildTurtle'
-AZUBU_CHANNEL = 'Faker'  # Case sensitive
+TWITCH_CHANNEL = ''
+AZUBU_CHANNEL = ''  # Case sensitive
 #
 #
 #
@@ -55,7 +55,6 @@ def check_twitch():
             update_sidebar('twitch', twitch_online, title, "http://www.twitch.tv/%s" % TWITCH_CHANNEL)
     else:
         if twitch_online or twitch_online is None:
-            print("Twitch stream is offline.")
             twitch_online = False
             update_sidebar('twitch', twitch_online, "%s is currently offline" % TWITCH_CHANNEL, "")
 
