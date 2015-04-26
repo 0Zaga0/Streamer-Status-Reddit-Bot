@@ -7,16 +7,18 @@ import praw
 import requests
 import time
 import traceback
+import re
+import HTMLParser
 
 #
 # VARIABLES TO CONFIGURE
 #
-REDDIT_USERNAME = ''
-REDDIT_PASSWORD = ''
-SUBREDDIT = ''
+REDDIT_USERNAME = 'LoLFantasyBot'
+REDDIT_PASSWORD = '%^fw9DYkus0VT5jq'
+SUBREDDIT = 'zagatest'
 
-TWITCH_CHANNEL = ''
-AZUBU_CHANNEL = ''  # Case sensitive
+TWITCH_CHANNEL = 'TSM_WildTurtle'
+AZUBU_CHANNEL = 'Faker'  # Case sensitive
 #
 #
 #
@@ -28,8 +30,8 @@ STATUS_CHECK_INTERVAL = 10  # minutes
 TWITCH_API = 'https://api.twitch.tv/kraken/streams/%s'
 AZUBU_API = 'http://api.azubu.tv/public/channel/%s/info'
 
-twitch_online = False
-azubu_online = False
+twitch_online = None
+azubu_online = None
 
 r = praw.Reddit(user_agent=USER_AGENT)
 r.login(REDDIT_USERNAME, REDDIT_PASSWORD)
@@ -43,19 +45,19 @@ def check_twitch():
 
     if data['stream'] is not None:
         if not twitch_online:
-            print("Twitch stream has come online!")
+            print("Twitch stream is online!")
 
             twitch_online = True
+            title = "%s is online and is playing %s : %s" % (TWITCH_CHANNEL,
+                                                             data['stream']['channel']['game'],
+                                                             data['stream']['channel']['status'])
 
-            title = "[TWITCH] %s is online and is playing %s : %s" % (TWITCH_CHANNEL,
-                                                                   data['stream']['channel']['game'],
-                                                                   data['stream']['channel']['status'])
-
-            r.submit(SUBREDDIT, title, url=data['stream']['channel']['url'], resubmit=True)
+            update_sidebar('twitch', twitch_online, title, "http://www.twitch.tv/%s" % TWITCH_CHANNEL)
     else:
-        if twitch_online:
-            print("Twitch stream has gone offline.")
+        if twitch_online or twitch_online is None:
+            print("Twitch stream is offline.")
             twitch_online = False
+            update_sidebar('twitch', twitch_online, "%s is currently offline" % TWITCH_CHANNEL, "")
 
 
 def check_azubu():
@@ -66,18 +68,29 @@ def check_azubu():
 
     if data['data']['is_live']:
         if not azubu_online:
-            print("Azubu stream has come online!")
+            print("Azubu stream is online!")
 
             azubu_online = True
+            title = "%s is online and is playing %s" % (AZUBU_CHANNEL, data['data']['category']['title'])
 
-            title = "[AZUBU] %s is online and is playing %s" % (AZUBU_CHANNEL,
-                                                                data['data']['category']['title'])
-
-            r.submit(SUBREDDIT, title, url="http://www.azubu.tv/" % AZUBU_CHANNEL, resubmit=True)
+            update_sidebar('azubu', azubu_online, title, "http://www.azubu.tv/%s" % AZUBU_CHANNEL)
     else:
-        if azubu_online:
-            print("Azubu stream has gone offline.")
+        if azubu_online or azubu_online is None:
+            print("Azubu stream is offline.")
             azubu_online = False
+            update_sidebar('azubu', azubu_online, "%s is currently offline" % AZUBU_CHANNEL, "")
+
+
+def update_sidebar(service_name, online, message, stream_url):
+    global r
+
+    subreddit = r.get_subreddit(SUBREDDIT)
+    sidebar = HTMLParser.HTMLParser().unescape(r.get_settings(SUBREDDIT)['description'])
+    sidebar = re.sub("\[.*\]\(.*#%s_(online)?(offline)?\)" % service_name,
+                     "[%s](%s#%s_%s)" % (message, stream_url, service_name, "online" if online else "offline"),
+                     sidebar)
+
+    r.update_settings(subreddit, description=sidebar)
 
 
 def main():
