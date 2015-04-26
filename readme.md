@@ -7,6 +7,7 @@ By utilizing subreddit CSS styling, the streamer's status can also be moved to t
 
 You must edit your subreddit's settings and add
 > \[\]\(#twitch_offline\)
+
 OR
 > \[\]\(#azubu_offline\)
 
