@@ -13,12 +13,12 @@ import HTMLParser
 #
 # VARIABLES TO CONFIGURE
 #
-REDDIT_USERNAME = 'LoLFantasyBot'
-REDDIT_PASSWORD = '%^fw9DYkus0VT5jq'
-SUBREDDIT = 'zagatest'
+REDDIT_USERNAME = ''
+REDDIT_PASSWORD = ''
+SUBREDDIT = ''
 
-TWITCH_CHANNEL = 'TSM_WildTurtle'
-AZUBU_CHANNEL = 'Faker'  # Case sensitive
+TWITCH_CHANNEL = ''
+AZUBU_CHANNEL = ''  # Case sensitive
 #
 #
 #
