@@ -85,7 +85,7 @@ def update_sidebar(service_name, online, message, stream_url):
 
     subreddit = r.get_subreddit(SUBREDDIT)
     sidebar = HTMLParser.HTMLParser().unescape(r.get_settings(SUBREDDIT)['description'])
-    sidebar = re.sub("\[.*\]\(.*#%s_(online)?(offline)?\)" % service_name,
+    sidebar = re.sub("\[.*\]\(.*#%s(_online)?(_offline)?\)" % service_name,
                      "[%s](%s#%s_%s)" % (message, stream_url, service_name, "online" if online else "offline"),
                      sidebar)
 
