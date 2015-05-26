@@ -39,24 +39,25 @@ def check_twitch(twitch_channel):
     global states
 
     data = requests.get(TWITCH_API % twitch_channel).json()
+    key = twitch_channel+'_twitch'
 
-    if 'twitch_'+twitch_channel not in states:
-        states['twitch_'+twitch_channel] = None
+    if key not in states:
+        states[key] = None
 
     if data['stream'] is not None:
-        if not states['twitch_'+twitch_channel]:
+        if not states[key]:
             print(twitch_channel+"@Twitch is online!")
 
-            states['twitch_'+twitch_channel] = True
+            states[key] = True
             title = "%s is online and is playing %s : %s" % (twitch_channel,
                                                              data['stream']['channel']['game'],
                                                              data['stream']['channel']['status'])
 
-            update_sidebar('twitch_'+twitch_channel, True, title, "http://www.twitch.tv/%s" % twitch_channel)
+            update_sidebar(key, True, title, "http://www.twitch.tv/%s" % twitch_channel)
     else:
-        if states['twitch_'+twitch_channel] or states['twitch_'+twitch_channel] is None:
-            states['twitch_'+twitch_channel] = False
-            update_sidebar('twitch_'+twitch_channel, False, "%s is currently offline" % twitch_channel, "")
+        if states[key] or states[key] is None:
+            states[key] = False
+            update_sidebar(key, False, "%s is currently offline" % twitch_channel, "")
 
 
 def check_azubu(azubu_channel):
@@ -64,22 +65,23 @@ def check_azubu(azubu_channel):
     global states
 
     data = requests.get(AZUBU_API % azubu_channel).json()
+    key = azubu_channel+'_azubu'
 
-    if 'azubu_'+azubu_channel not in states:
-        states['azubu_'+azubu_channel] = None
+    if key not in states:
+        states[key] = None
 
     if data['data']['is_live']:
-        if not states['azubu_'+azubu_channel]:
+        if not states[key]:
             print(azubu_channel+"@Azubu is online!")
 
-            states['azubu_'+azubu_channel] = True
+            states[key] = True
             title = "%s is online and is playing %s" % (azubu_channel, data['data']['category']['title'])
 
-            update_sidebar('azubu_'+azubu_channel, True, title, "http://www.azubu.tv/%s" % azubu_channel)
+            update_sidebar(key, True, title, "http://www.azubu.tv/%s" % azubu_channel)
     else:
-        if states['azubu_'+azubu_channel] or states['azubu_'+azubu_channel] is None:
-            states['azubu_'+azubu_channel] = False
-            update_sidebar('azubu_'+azubu_channel, False, "%s is currently offline" % azubu_channel, "")
+        if states[key] or states[key] is None:
+            states[key] = False
+            update_sidebar(key, False, "%s is currently offline" % azubu_channel, "")
 
 
 def update_sidebar(service_name, online, message, stream_url):
@@ -97,12 +99,12 @@ def check_sidebar():
     subreddit = r.get_subreddit(SUBREDDIT)
     sidebar = HTMLParser.HTMLParser().unescape(r.get_settings(SUBREDDIT)['description'])
 
-    for res in re.findall("\[.*\]\(.*#(twitch|azubu)_(\w+)_(online|offline)\)", sidebar):
-        print("Checking %s for %s" % (res[0], res[1]))
-        if res[0] == "twitch":
-            check_twitch(res[1])
+    for res in re.findall("\[.*\]\(.*#(\w+)_(twitch|azubu)_(online|offline)\)", sidebar):
+        print("Checking %s for %s" % (res[1], res[0]))
+        if res[1] == "twitch":
+            check_twitch(res[0])
         if res[1] == "azubu":
-            check_azubu(res[1])
+            check_azubu(res[0])
 
     r.update_settings(subreddit, description=sidebar)
 
