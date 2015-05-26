@@ -1,8 +1,8 @@
 from setuptools import setup
 
-setup(name='Reddit Livestream Alerter',
+setup(name='Streamer-Status-Reddit-Bot',
       version='1.0',
-      description='Makes a post in a specified subreddit whenever a specified user comes online on Twitch or Azubu',
+      description="Edits a subreddit's sidebar whenever specified streamers come online on Twitch or Azubu",
       author='John Sabath',
       author_email='jcsabath@gmail.com',
       install_requires=[
