@@ -1,4 +1,8 @@
-This Reddit bot will check the status of Azubu/Twitch streamers, and update a subreddit's sidebar to show whether or not the  streamers are online.
+## Purpose
+
+This Reddit bot will check the status of Azubu/Twitch streamers, and update a subreddit's sidebar to show whether or not the  streamers are online.  It was built for a Reddit user in [/r/RequestABot](https://www.reddit.com/r/RequestABot/).
+
+## How to Use
 
 By utilizing subreddit CSS, the streamers' statuses can also be moved to the subreddit's header
 <img src="http://i.imgur.com/YVBgMYv.png">
